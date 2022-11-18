@@ -2,37 +2,56 @@
 
 .section .text
 _start:
-    mov $0, %rdx ;in charge of array1
-    mov $0, %rax ;in charge of array2
-    mov $0 , %r8 ;in charge of merge
-    cmpl %rdx(array1) , %rax(array2)
-    jg greater
-    jl lesser
-    je equal
-
-
-
-greater:
-    movl %rdx(array1) , %r8(mergedArray)
-    add $4,%rdx
-    add $4,%r8
-    jmp _start
-
-lesser:
-    movl %rax(array2) , %r8(mergedArray)
-    add $4,%rax
-    add $4,%r8
-    jmp _start
-
-equal:
-    cmpl $0,%rdx(array1)
-    je ending
-    add $4,%rax
-    add $4,%rdx
-    jmp _start
-
-ending:
-    movl $0 , %r8(mergedArray)
-
-
+    mov $0, %rdx
+    mov $0, %rax 
+    mov $0 , %r8 
+    mov $array1, %r9 
+    mov $array2, %r10 
+    mov $mergedArray, %r11
     
+.Loop1_hw1:
+    #lea -4(%r8, %r11), %r13
+    #movl (%r13), %r13d
+    
+    movl (%r9, %rdx), %ebx
+    movl (%r10, %rax), %ecx
+    cmpl %ecx, %ebx 
+    ja greater_hw1
+    jb lesser_hw1
+    je equal_hw1
+
+greater_hw1:    
+    movl %ebx, (%r8,%r11,1)    
+    add $4,%rdx
+    add $4,%r8
+    jmp .Loop1_hw1
+
+lesser_hw1:
+    movl %ecx, (%r8,%r11,1) 
+    add $4,%rax
+    add $4,%r8
+    jmp .Loop1_hw1
+
+equal_hw1:
+    cmpl $0,%ebx
+    je ending_hw1
+    
+    movl (%r11, %r8), %r12d
+    cmpl %r12d,%ebx
+    je equal_and_exist_hw1
+    jne equal_and_exist_hw1
+    
+
+equal_and_exist_hw1:
+    add $4,%rax
+    add $4,%rdx
+    jmp .Loop1_hw1
+
+equal_and_not_exist_hw1:
+    movl %ecx, (%r8,%r11,1)    
+    add $4,%rdx
+    add $4,%r8
+    jmp .Loop1_hw1 
+ending_hw1:
+    movl $0 , (%r11, %r8)
+
