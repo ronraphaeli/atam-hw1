@@ -1,0 +1,41 @@
+
+.global main
+
+.section .bss
+.lcomm a, 4
+.lcomm b, 4
+.section .text
+
+main:
+    #2
+    xorq  %rax, %rax
+    movb $0x11, a(%rip)
+    sarl $4 , a(%rip)
+    
+    mov $a, %rax
+    mov (%rax), %rax
+    
+    #3
+    movl a, %eax
+    lea (%eax, %eax, 2), %eax
+    mov %eax, a
+    
+    mov $a, %rax
+    mov (%rax), %rax
+    
+    #8
+    movl $0x00010000, %eax
+    xor $0xFFFFFFFF, %eax
+    mov %eax, a
+    mov $a, %rax
+    mov (%rax), %rax
+    
+    #9
+    movq $0x3, a(%rip)
+    movl a, %eax
+    imul %eax, %eax
+    imul %eax, %eax
+    mov %eax, a
+    mov $a, %rax
+    mov (%rax), %rax
+    ret

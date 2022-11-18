@@ -1,0 +1,27 @@
+.global main
+
+.section .bss
+.lcomm n, 2
+.lcomm b, 4
+.section .text
+main:
+    # write your code here
+    xor %rax, %rax
+    xor %rbx, %rbx
+    xor %rcx, %rcx
+    xor %r9, %r9
+    mov $1, %bx
+    movw $41,n(%rip) 
+    mov (n), %dx
+.L1:
+    xor %rcx, %rcx
+    mov %bx, %cx
+    imul %bx, %cx
+    imul %bx, %cx
+    add %ecx, %eax
+    inc %bx
+    dec %dx
+    test %dx, %dx
+    jne .L1
+END:
+    ret
