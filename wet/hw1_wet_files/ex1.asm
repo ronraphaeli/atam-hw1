@@ -2,19 +2,21 @@
 
 .section .text
 _start:
-    movb num, %Al
-    sall $6,%al
-    mobb %0,%dl
+    movq num, %rax
+    sal $6,%al    
+    movb $0,%dl
     cmp %al,%dl
-    je equal
-    jne nequal
+    je equal_hw1
+    jne nequal_hw1
 
-equal:
-    mov $1,bool
+equal_hw1:
+    movb $1,Bool
+	jmp end_hw1
 
-nequal:
-    mov $0,bool
+nequal_hw1:
+    movb $0,Bool
 
+end_hw1:
 
 
 
