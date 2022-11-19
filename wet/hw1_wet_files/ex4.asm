@@ -15,7 +15,7 @@ _start:
     cmpq %rcx, %rdx
     jg greater_hw1
     jl lesser_hw1
-    je exist_hw1
+    je exit_hw1
     
     
 
@@ -37,14 +37,14 @@ lesser_hw1:
     
 add_right_son_hw1:
     mov %rbx, 16(%rax, %r8)
-    jmp exist_hw1
+    jmp exit_hw1
     
 add_left_son_hw1:
     mov %rbx, 8(%rax, %r8)
-    jmp exist_hw1
+    jmp exit_hw1
 
 head_null_hw1:
     mov %rbx, root(%rip)
-   
 	
-exist_hw1:
+exit_hw1:
+	nop
