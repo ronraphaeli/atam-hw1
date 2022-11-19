@@ -6,6 +6,8 @@ mov $new_node, %rbx # get addr of value of new_node
     mov (%rbx), %rcx # get value of new_node
     mov $root, %rax
     mov root, %rax # get addr of value of root
+	test %rax , %rax    # check head isn't NULL
+    je exist_hw1
     mov (%rax), %rdx # get value of root
     xor %r8, %r8 # zero constant
     
