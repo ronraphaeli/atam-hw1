@@ -3,7 +3,7 @@
 .section .text
 _start:
     mov $0, %rdx
-    mov $0, %rax 
+    mov $0, %rax #e
     mov $0 , %r8 
     mov $array1, %r9 
     mov $array2, %r10 
