@@ -2,12 +2,10 @@
 
 .section .text
 _start:
-	mov $new_node, %rbx # get addr of value of new_node
+    mov $new_node, %rbx # get addr of value of new_node
     mov (%rbx), %rcx # get value of new_node
     mov $root, %rax
     mov root, %rax # get addr of value of root
-	test %rax , %rax    # check head isn't NULL
-    je head_null_hw1
     mov (%rax), %rdx # get value of root
     xor %r8, %r8 # zero constant
     
@@ -15,10 +13,9 @@ _start:
     cmpq %rcx, %rdx
     jg greater_hw1
     jl lesser_hw1
-    je exit_hw1
+    je exist_hw1
     
     
-
 greater_hw1:    
     mov 8(%rax), %r9 # get addr of left son
     cmp %r8, %r9
@@ -37,14 +34,11 @@ lesser_hw1:
     
 add_right_son_hw1:
     mov %rbx, 16(%rax, %r8)
-    jmp exit_hw1
+    jmp exist_hw1
     
 add_left_son_hw1:
     mov %rbx, 8(%rax, %r8)
-    jmp exit_hw1
-
-head_null_hw1:
-    mov %rbx, root(%rip)
-	
-exit_hw1:
-	nop
+    jmp exist_hw1
+    
+exist_hw1:
+    
