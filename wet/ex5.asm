@@ -10,12 +10,13 @@ _start:
 #r11 pointer to current node
 #r12 = val
 
-    xor %rcx , %rcx #rcx=0
+    xor %rcx, %rcx #rcx=0
     movq $head , %r10
     movq (head) , %r11
-    movq (val) , %r12
+    movl (Value) , %r12d
     
 propagate_HW1:
+    movq (%r11), %r14
     cmpq %r12 , (%r11)
     je found_val_HW1
     cmpq $0 ,8(%r11) #compare node->next with 0 to check if null
@@ -43,6 +44,13 @@ second_val_HW1:
     je end_list_HW1
     jmp move_node_HW1
     
+end_list_sequnce_HW1:
+    movq %rax , 8(%r13) #node1.next = rax = node2.next
+    movq %r13 , 8(%r14) #node2.next = rdx = node1.next
+        
+    movq %r14 , (%r8)
+    nop
+    jmp end_HW1
     
 end_list_HW1:
     cmpq $2 , %rcx #counter-2
@@ -52,6 +60,8 @@ end_list_HW1:
     movq 8(%r13) , %rdx #rdx = node1.next
     movq (%r9) ,%r14 #r14 = pointer to node2
     movq 8(%r14) , %rax #rax = node2.next
+    cmpq %rdx, %r14
+    je end_list_sequnce_HW1
     movq %rax , 8(%r13) #node1.next = rax = node2.next
     movq %rdx , 8(%r14) #node2.next = rdx = node1.next
     nop
@@ -60,7 +70,6 @@ end_list_HW1:
     movq %rdx , (%r9)
     movq %rax , (%r8)
     nop
-    
 
-    
 end_HW1:
+

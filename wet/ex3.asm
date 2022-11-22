@@ -3,7 +3,7 @@
 .section .text
 _start:
     mov $0, %rdx
-    mov $0, %rax 
+    mov $0, %rax #e
     mov $0 , %r8 
     mov $array1, %r9 
     mov $array2, %r10 
@@ -20,13 +20,19 @@ _start:
     jb lesser_hw1
     je equal_hw1
 
-greater_hw1:    
+greater_hw1:
+    movl -4(%r11, %r8), %r12d
+    cmpl %r12d,%ebx 
+    je not_equal_and_exist_greater_hw1
     movl %ebx, (%r8,%r11,1)    
     add $4,%rdx
     add $4,%r8
     jmp .Loop1_hw1
 
 lesser_hw1:
+    movl -4(%r11, %r8), %r12d
+    cmpl %r12d,%ecx 
+    je not_equal_and_exist_lesser_hw1
     movl %ecx, (%r8,%r11,1) 
     add $4,%rax
     add $4,%r8
@@ -36,11 +42,18 @@ equal_hw1:
     cmpl $0,%ebx
     je ending_hw1
     
-    movl (%r11, %r8), %r12d
+    movl -4(%r11, %r8), %r12d
     cmpl %r12d,%ebx
     je equal_and_exist_hw1
-    jne equal_and_exist_hw1
+    jne equal_and_not_exist_hw1
     
+not_equal_and_exist_greater_hw1:
+    add $4,%rdx
+    jmp .Loop1_hw1    
+    
+not_equal_and_exist_lesser_hw1:
+    add $4,%rax
+    jmp .Loop1_hw1
 
 equal_and_exist_hw1:
     add $4,%rax
@@ -52,6 +65,6 @@ equal_and_not_exist_hw1:
     add $4,%rdx
     add $4,%r8
     jmp .Loop1_hw1 
+    
 ending_hw1:
     movl $0 , (%r11, %r8)
-
