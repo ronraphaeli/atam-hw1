@@ -1,44 +1,56 @@
 .global _start
 
 .section .text
-_start:
-    mov $new_node, %rbx # get addr of value of new_node
-    mov (%rbx), %rcx # get value of new_node
-    mov $root, %rax
-    mov root, %rax # get addr of value of root
-    mov (%rax), %rdx # get value of root
-    xor %r8, %r8 # zero constant
-    
-.Loop1_hw1:        
-    cmpq %rcx, %rdx
-    jg greater_hw1
-    jl lesser_hw1
-    je exist_hw1
-    
-    
-greater_hw1:    
-    mov 8(%rax), %r9 # get addr of left son
-    cmp %r8, %r9
-    je add_left_son_hw1
-    mov 8(%rax), %rax
-    mov (%rax), %rdx # get value of left son
-    jmp .Loop1_hw1
 
-lesser_hw1:
-    mov 16(%rax), %r9 # get addr of right son
-    cmp %r8, %r9
-    je add_right_son_hw1
-    mov 16(%rax), %rax
-    mov (%rax), %rdx # get value of right son    
-    jmp .Loop1_hw1
+_start:
+
+# r9 = will hold the addres to next node (when needed)
+# r10 = addres of current node
+# r11 =addres of new node
+# r12 = data of new node
+# r13 = current node data
+
+
+    xor %rax , %rax #rax=0
+    movq $root , %r9 
+    movq (root) , %r10
+    movq (new_node) , %r12
+    movq $new_node , %r11
+    cmpq $0 , %r10 # is the root empty?
+    je empty_tree_HW1
     
-add_right_son_hw1:
-    mov %rbx, 16(%rax, %r8)
-    jmp exist_hw1
     
-add_left_son_hw1:
-    mov %rbx, 8(%rax, %r8)
-    jmp exist_hw1
+loop_HW1:
+    movq (%r10) , %r13 # current node data -> r13 
+    cmp  %r13 , %r12  # new-current
+    je end_HW1 #same node so do nothing
+    jg greater_HW1 #go to right side
+    jl lesser_HW1 #go to left side
     
-exist_hw1:
+greater_HW1:
+    movq %r10 , %r9
+    addq $16 , %r9 
+    cmpq %rax , (%r9) #is the right side empty?
+    je insert_HW1 #if yes, insert the node
+    movq (%r9) , %r10 #if not, the right node is the new current
+    jmp loop_HW1    
+    
+lesser_HW1:
+    movq %r10 , %r9
+    addq $8 , %r9
+    cmpq %rax , (%r9) #is the left side empty?
+    je insert_HW1 #if yes, insert the node
+    movq (%r9) , %r10 #if not, the left node is the new current
+    jmp loop_HW1    
+    
+    
+insert_HW1:
+    movq %r11 ,(%r9) #insert the addres of new node to the empty place
+    jmp end_HW1     
+    
+empty_tree_HW1:
+    movq %r11 , (root)
+    jmp end_HW1 
+    
+end_HW1:
     

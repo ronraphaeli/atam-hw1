@@ -13,11 +13,11 @@ _start:
     xor %rcx, %rcx #rcx=0
     movq $head , %r10
     movq (head) , %r11
-    movl (Value) , %r12d
+    movl (val) , %r12d
     
 propagate_HW1:
     movq (%r11), %r14
-    cmpq %r12 , (%r11)
+    cmpl %r12d , (%r11)
     je found_val_HW1
     cmpq $0 ,8(%r11) #compare node->next with 0 to check if null
     je end_list_HW1
@@ -72,4 +72,3 @@ end_list_HW1:
     nop
 
 end_HW1:
-
